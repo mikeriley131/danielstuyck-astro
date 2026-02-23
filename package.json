@@ -9,6 +9,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.17.1"
+    "@fontsource/archivo": "^5.2.8",
+    "@fontsource/raleway": "^5.2.8",
+    "astro": "^5.17.1",
+    "sass": "^1.97.3"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.4"
   }
 }

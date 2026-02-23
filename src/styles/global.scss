@@ -1,0 +1,599 @@
+/* BREAKPOINTS
+* ------------------------------------------------------------------------------
+*/
+$breakpoint-xs: 20rem; /* 320px */
+$breakpoint-s: 26.625em; /* 426px */
+$breakpoint-m: 36rem; /* 576px */
+$breakpoint-l: 48rem; /* 768px */
+$breakpoint-xl: 60.5rem; /* 968 */
+$breakpoint-xxl: 75rem; /* 1200px */
+$breakpoint-xxxl: 90rem; /* 1440px */
+
+/* FONTS
+* ------------------------------------------------------------------------------
+*/
+$font-stack:
+  var(--font-raleway),
+  -apple-system,
+  BlinkMacSystemFont,
+  Helvetica,
+  Arial,
+  sans-serif;
+$font-heading:
+  var(--font-archivo),
+  -apple-system,
+  BlinkMacSystemFont,
+  Helvetica,
+  Arial,
+  sans-serif;
+
+/* COLORS
+* ------------------------------------------------------------------------------
+*/
+$white: #fff;
+$black: #000;
+$grey-lightest: #f0f0f0;
+$grey-lighter: #eee;
+$grey-light: #ccc;
+$grey: #999;
+$grey-dark: #171717;
+$red: #f00;
+$yellow: #f9ed33;
+$blue: #38bdbd;
+
+$text: $white;
+
+/* COLOR CONFIGS
+* ------------------------------------------------------------------------------
+*/
+$bg-clr: $grey-dark;
+$text-clr: $text;
+$primary-clr: $yellow;
+
+/* SPACING
+* ------------------------------------------------------------------------------
+*/
+$container-width: 62.375rem;
+$space: 1.5rem; /* 24px */
+
+$space-5: calc($space / 12); /* 2px */
+$space-10: calc($space / 6); /* 4px */
+$space-20: calc($space / 3); /* 8px */
+$space-30: calc($space / 2); /* 12px */
+$space-40: calc($space * 0.75); /* 18px */
+$space-50: $space; /* 24px */
+$space-55: calc($space * 1.5); /* 36px */
+$space-60: calc($space * 2); /* 48px */
+$space-65: calc($space * 2.5); /* 60px */
+$space-70: calc($space * 3); /* 72px */
+$space-80: calc($space * 4); /* 96px */
+$space-85: calc($space * 6); /* 144px */
+$space-90: calc($space * 8); /* 192px */
+
+/* Andy Bell's More Modern CSS Reset */
+/* https://piccalil.li/blog/a-more-modern-css-reset/ */
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Prevent font size inflation */
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+/* Remove default margin in favour of better control in authored CSS */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin-block-end: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+/* Set core body defaults */
+body {
+  margin: 0;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Set shorter line heights on headings and interactive elements */
+h1,
+h2,
+h3,
+h4,
+button,
+input,
+label {
+  line-height: 1.1;
+}
+
+/* Balance text wrapping on headings */
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+  color: currentColor;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* Make sure textareas without a rows attribute are not tiny */
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+/* Anything that has been anchored to should have extra scroll margin */
+:target {
+  scroll-margin-block: 5ex;
+}
+
+.sr-only:not(:focus):not(:active) {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+body {
+  background-color: $primary-clr;
+  font-family: $font-stack;
+  font-weight: 400;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+address {
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/*
+*
+* Header
+*
+*/
+.header {
+  align-items: center;
+  background-color: $primary-clr;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: $space-65;
+  padding-top: $space-50;
+
+  &__title {
+    font-family: $font-heading;
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0;
+
+    &-link {
+      color: $black;
+      outline: none;
+      text-decoration: none;
+
+      &:focus,
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__list {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__item {
+    &:not(:last-of-type) {
+      .header__link::after {
+        content: "//";
+        margin-left: $space-10;
+        margin-right: $space-10;
+      }
+    }
+  }
+
+  &__link {
+    color: $black;
+    font-family: $font-stack;
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: 500;
+    outline: none;
+    text-decoration: none;
+
+    &:focus,
+    &:hover {
+      span {
+        text-decoration: underline;
+      }
+    }
+
+    &-text--active {
+      text-decoration: underline;
+    }
+  }
+}
+
+/*
+*
+* Footer
+*
+*/
+.footer {
+  align-items: center;
+  background: $primary-clr;
+  display: flex;
+  flex-direction: column;
+  padding-top: $space-40;
+  width: 100%;
+
+  &__link {
+    display: flex;
+    gap: $space-20;
+    justify-content: center;
+    margin-bottom: $space-20;
+  }
+
+  &__icon {
+    height: 1.25rem;
+  }
+}
+
+/*
+*
+* Global
+*
+*/
+.content {
+  background-color: $bg-clr;
+  padding-bottom: $space-55;
+  padding-top: $space-55;
+}
+
+/*
+*
+* Home Page
+*
+*/
+.home {
+  &__header-wrapper {
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+  }
+}
+
+/*
+*
+* Category Page
+*
+*/
+.category {
+  &__list {
+    display: grid;
+    gap: $space-40 $space-30;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    justify-items: center;
+    max-width: $container-width;
+    margin: 0 auto;
+  }
+
+  &__item {
+    &:hover,
+    &:focus {
+      img {
+        opacity: 0.8;
+      }
+    }
+
+    &-title {
+      font-size: 0.75rem;
+      line-height: 1;
+      margin: 0;
+      margin-top: $space-20;
+    }
+
+    &-link {
+      color: $primary-clr;
+      font-weight: 500;
+      text-decoration: none;
+    }
+  }
+
+  &__reel-link {
+    color: $black;
+    text-decoration: none;
+
+    &:hover {
+      color: $blue;
+    }
+  }
+
+  &__reel-container {
+    align-items: center;
+    background-color: $primary-clr;
+    display: flex;
+    height: 136px;
+    justify-content: center;
+    width: 240px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  &__reel-text {
+    font-family:
+      Helvetica,
+      Arial,
+      -apple-system,
+      BlinkMacSystemFont,
+      sans-serif;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+/*
+*
+* Detail Page
+*
+*/
+.detail-page {
+  display: grid;
+  gap: $space-30;
+  grid-template-areas:
+    "featured-image"
+    "image-list"
+    "copy";
+  margin: 0 auto;
+  max-width: $container-width;
+  padding-left: $space-30;
+  padding-right: $space-30;
+
+  @media (min-width: $breakpoint-xl) {
+    grid-template-areas:
+      "featured-image image-list"
+      "copy image-list";
+    grid-template-columns: 1fr 5.125rem;
+    grid-template-rows: auto 1fr;
+  }
+
+  &__featured-image {
+    grid-area: featured-image;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+    view-transition-name: featured-image;
+
+    @media (min-width: $breakpoint-xl) {
+      margin-right: $space-30;
+    }
+  }
+
+  &__image-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-30;
+    grid-area: image-list;
+
+    @media (min-width: $breakpoint-xl) {
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
+
+    &-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      padding: 0;
+
+      &:focus {
+        outline: none;
+        border: 1px solid $primary-clr;
+      }
+
+      &:focus,
+      &:hover {
+        .detail-page__image-list-image {
+          opacity: 1;
+        }
+      }
+    }
+
+    &-image {
+      max-width: 5.125rem;
+      opacity: 0.7;
+    }
+  }
+
+  &__text-content {
+    grid-area: copy;
+  }
+
+  &__heading {
+    color: $primary-clr;
+    font-family: $font-heading;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    margin: 0;
+    margin-bottom: $space-10;
+    text-transform: uppercase;
+  }
+
+  &__copy {
+    color: $white;
+    font-size: 0.8rem;
+    margin: 0;
+
+    &--awards {
+      font-style: italic;
+      margin-top: $space-20;
+    }
+  }
+
+  &__back-button {
+    margin-top: $space-30;
+    outline: none;
+    transition: scale 0.2s ease-out;
+    width: 1.875rem;
+
+    &:focus,
+    &:hover {
+      scale: 1.2;
+    }
+  }
+}
+
+/*
+*
+* Contact Page
+*
+*/
+.contact {
+  margin: 0 auto;
+  max-width: 25rem;
+
+  &__map-container {
+    margin-bottom: $space-50;
+  }
+
+  &__info-container {
+    display: flex;
+    flex-direction: column;
+    gap: $space-30;
+    margin-bottom: $space-55;
+  }
+
+  &__item {
+    align-items: center;
+    display: flex;
+    gap: $space-20;
+
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+
+    .col-1 {
+      display: grid;
+      place-items: center;
+    }
+
+    img {
+      height: 1.25rem;
+    }
+  }
+
+  a {
+    color: $primary-clr;
+    font-size: 0.8rem;
+    outline: none;
+    text-decoration: none;
+
+    &:focus,
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__social-links-list {
+    display: flex;
+    gap: $space-60;
+    justify-content: center;
+
+    img {
+      height: 1.5rem;
+    }
+  }
+}
+
+@starting-style {
+  .detail-page__featured-image {
+    opacity: 0;
+  }
+}
+
+/* Adjust speed of the cross-fade */
+::view-transition-group(featured-image) {
+  animation-duration: 0.25s;
+}
+
+/* Use standard animations to refine the fade */
+::view-transition-old(featured-image) {
+  animation: 0.25s ease-out both fade-out;
+}
+::view-transition-new(featured-image) {
+  animation: 0.25s ease-in both fade-in;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}

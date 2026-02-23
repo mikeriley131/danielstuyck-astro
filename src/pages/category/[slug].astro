@@ -1,0 +1,78 @@
+---
+import { getAllCategoriesWithSlugs, getAllPosts } from '../../lib/api';
+
+import Layout from '../../layouts/Layout.astro'
+import Header from '../../components/Header.astro';
+
+interface Post {
+  title: string;
+  categories: {
+    nodes: {
+      name: string;
+    }[];
+  };
+  featuredImage: {
+    node: {
+      filePath: string;
+    }
+  }
+  slug: string;
+}
+
+export async function getStaticPaths() {
+  const pagesWithSlugs = await getAllCategoriesWithSlugs();
+  return pagesWithSlugs.edges.map(({ node }: { node: { slug: string } }) => {
+    return {
+      params: { slug: node.slug },
+    };
+  });
+}
+
+const { slug }: { slug: string } = Astro.params;
+const cleanSlug = slug.replace(/-/g, " ");
+
+const getPostsByCategory = async (categoryName?: string) => {
+  const allPosts = await getAllPosts();
+  return allPosts.filter((post: Post) => post.categories.nodes[0].name === categoryName);
+};
+
+const categoryPosts = await getPostsByCategory(cleanSlug);
+---
+<Layout>
+  <Header />
+  <article class="content category">
+    <h1 class="sr-only" set:html={slug} />
+    <ul role="list" class="category__list">
+      <li class="category__item">
+        {cleanSlug === 'colorist' ?
+        (<a class="category__reel-link" href="https://vimeo.com/37415884?width=853&height=480">
+          <div class="category__reel-container">
+            <p class="category__reel-text">colorist reel</p>
+          </div>
+        </a>
+        <p class="category__item-title"><a class="category__item-link" href="https://vimeo.com/37415884?width=853&height=480">Colorist Reel</a></p>)
+      :
+      (<a class="category__reel-link" href="https://vimeo.com/106631469">
+          <div class="category__reel-container">
+            <p class="category__reel-text">title design work samples</p>
+          </div>
+        </a>
+        <p class="category__item-title"><a class="category__item-link" href="https://vimeo.com/106631469">Title Design Work Samples</a></p>)}
+      </li>
+      {categoryPosts.map((post: Post) => (
+        <li class="category__item">
+          {post.featuredImage && (
+            <a class="category__reel-container" href={`/${post.slug}`}>
+              <img
+                src={`${import.meta.env.PUBLIC_WP_URL}${post.featuredImage.node.filePath}`}
+                alt={`still from ${post.title}`} />
+            </a>
+          )}
+          <p class="category__item-title">
+            <a class="category__item-link" href={`/${post.slug}`}>{post.title}</a>
+          </p>
+        </li>
+      ))}
+    </ul>
+  </article>
+</Layout>

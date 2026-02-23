@@ -1,0 +1,27 @@
+---
+import { getAllPagesWithSlugs, getAllPostsWithSlugs } from '../lib/api';
+
+import Layout from '../layouts/Layout.astro'
+import Header from '../components/Header.astro';
+import Contact from '../components/Contact.astro';
+import PostDetail from '../components/PostDetail.astro';
+
+export async function getStaticPaths() {
+  const pagesWithSlugs = await getAllPagesWithSlugs();
+  const postsWithSlugs = await getAllPostsWithSlugs();
+  return [...pagesWithSlugs.edges, ...postsWithSlugs.edges].map(({ node }: { node: { slug: string } }) => {
+    return {
+      params: { slug: node.slug },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+---
+<Layout>
+  <Header />
+  <article class="content">
+    {slug === 'contact' && <Contact />}
+    {slug !== 'contact' && <PostDetail slug={slug} />}
+  </article>
+</Layout>

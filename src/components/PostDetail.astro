@@ -1,0 +1,96 @@
+---
+import { getAllPosts } from '../lib/api';
+
+interface PortfolioImage {
+  portfolioImage: {
+    node: {
+      filePath: string;
+    }
+  }
+}
+
+interface Post {
+  title: string;
+  categories: {
+    nodes: {
+      name: string;
+    }[];
+  };
+  slug: string;
+  featuredImage: {
+    node: {
+      filePath: string;
+    }
+  }
+  portfolioItemFields: {
+    portfolioAwards: string;
+    portfolioDirectors: string;
+    portfolioImages: {
+      portfolioImage: PortfolioImage[];
+    };
+    portfolioRole: string;
+    previewText: string;
+  }
+}
+
+const { slug } = Astro.props;
+
+const getPostBySlug = async (slug: string) => {
+  const allPosts = await getAllPosts();
+  return allPosts.find((post: Post) => post.slug === slug);
+};
+
+const pageData = await getPostBySlug(slug);
+---
+<div class="detail-page">
+    <img id="featured-image" class="detail-page__featured-image" src={`${import.meta.env.PUBLIC_WP_URL}${pageData.featuredImage.node.filePath}`} alt={`still from ${pageData.title}`} />
+
+    <ul class="detail-page__image-list" role="list">
+      {pageData.portfolioItemFields.portfolioImages.map((image: PortfolioImage, index: number) => (
+        <li>
+          <button class="detail-page__image-list-button" id={`button-${index + 1}`}>
+            <img class="detail-page__image-list-image" src={`${import.meta.env.PUBLIC_WP_URL}/${image?.portfolioImage?.node?.filePath}`} alt="" id={`img-${index + 1}`} />
+          </button>
+        </li>
+        ))}
+    </ul>
+
+    <div class="detail-page__text-content">
+      <h1 class="detail-page__heading">{pageData.title}</h1>
+      <p class="detail-page__copy">{pageData.portfolioItemFields.portfolioDirectors}</p>
+      <p class="detail-page__copy">{pageData.portfolioItemFields.portfolioRole}</p>
+      <p class="detail-page__copy detail-page__copy--awards" set:html={pageData.portfolioItemFields.portfolioAwards} />
+      <button class="detail-page__back-button" id="backButton">
+        <img src={`${import.meta.env.PUBLIC_WP_URL}/wp-content/themes/stuyck/images/icon-back-yellow.png`} />
+      </button>
+    </div>
+</div>
+
+<script>
+  import { myState } from '../store/state.js'
+
+  document.querySelectorAll('.detail-page__image-list button').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      console.log('button clicked');
+      const img = btn.querySelector('img');
+      if (img && img.id) myState.featuredImg = img.id;
+    });
+  });
+
+  myState.listen(() => {
+    const featuredImage = document.getElementById('featured-image')  as HTMLImageElement;
+    const newImage = document.getElementById(myState.featuredImg) as HTMLImageElement;
+    if (featuredImage && newImage) {
+      featuredImage.src = newImage.src;
+
+      document.startViewTransition(() => {
+        featuredImage.src = newImage.src;
+      });
+    }
+  });
+
+  const backButton = document.getElementById('backButton');
+  backButton?.addEventListener('click', () => {
+    history.back();
+  });
+</script>
