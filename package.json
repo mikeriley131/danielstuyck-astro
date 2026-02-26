@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "danielstuyck-astro",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -9,8 +9,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@fontsource/archivo": "^5.2.8",
-    "@fontsource/raleway": "^5.2.8",
     "astro": "^5.17.1",
     "sass": "^1.97.3"
   },

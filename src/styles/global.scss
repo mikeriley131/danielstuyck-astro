@@ -12,15 +12,47 @@ $breakpoint-xxxl: 90rem; /* 1440px */
 /* FONTS
 * ------------------------------------------------------------------------------
 */
-$font-stack:
-  var(--font-raleway),
+
+@font-face {
+  font-family: "Akzidenz";
+  src: url("/fonts/akz.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Essence Sans";
+  src: url("/fonts/es.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Gotham Light";
+  src: url("/fonts/gl.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Gotham Medium";
+  src: url("/fonts/gm.otf") format("opentype");
+}
+
+$font-body-light:
+  "Gotham Light",
   -apple-system,
   BlinkMacSystemFont,
   Helvetica,
   Arial,
   sans-serif;
-$font-heading:
-  var(--font-archivo),
+
+$font-body-medium:
+  "Gotham Medium",
+  -apple-system,
+  BlinkMacSystemFont,
+  Helvetica,
+  Arial,
+  sans-serif;
+
+$font-heading-header: Helvetica, Arial, sans-serif;
+
+$font-heading-detail:
+  "Essence Sans",
   -apple-system,
   BlinkMacSystemFont,
   Helvetica,
@@ -53,7 +85,7 @@ $primary-clr: $yellow;
 /* SPACING
 * ------------------------------------------------------------------------------
 */
-$container-width: 62.375rem;
+$container-width: 65rem;
 $space: 1.5rem; /* 24px */
 
 $space-5: calc($space / 12); /* 2px */
@@ -184,7 +216,7 @@ textarea:not([rows]) {
 
 body {
   background-color: $primary-clr;
-  font-family: $font-stack;
+  font-family: $font-body-light;
   font-weight: 400;
 }
 
@@ -210,12 +242,13 @@ address {
   background-color: $primary-clr;
   display: flex;
   flex-direction: column;
+  gap: $space-10;
   justify-content: center;
-  padding-bottom: $space-65;
+  padding-bottom: $space-50;
   padding-top: $space-50;
 
   &__title {
-    font-family: $font-heading;
+    font-family: $font-heading-header;
     font-size: 2.2rem;
     font-weight: 700;
     line-height: 1.1;
@@ -250,7 +283,7 @@ address {
 
   &__link {
     color: $black;
-    font-family: $font-stack;
+    font-family: $font-body-light;
     font-size: 1rem;
     font-style: italic;
     font-weight: 500;
@@ -265,7 +298,7 @@ address {
     }
 
     &-text--active {
-      text-decoration: underline;
+      font-family: $font-body-medium;
     }
   }
 }
@@ -283,11 +316,22 @@ address {
   padding-top: $space-40;
   width: 100%;
 
+  &__nav {
+    display: flex;
+    gap: $space-20;
+  }
+
   &__link {
     display: flex;
     gap: $space-20;
     justify-content: center;
     margin-bottom: $space-20;
+    transition: scale 0.2s ease-out;
+
+    &:focus,
+    &:hover {
+      scale: 1.2;
+    }
   }
 
   &__icon {
@@ -336,6 +380,8 @@ address {
   }
 
   &__item {
+    max-width: 15rem;
+
     &:hover,
     &:focus {
       img {
@@ -382,12 +428,7 @@ address {
   }
 
   &__reel-text {
-    font-family:
-      Helvetica,
-      Arial,
-      -apple-system,
-      BlinkMacSystemFont,
-      sans-serif;
+    font-family: $font-body-light;
     font-weight: 500;
     margin: 0;
   }
@@ -400,15 +441,15 @@ address {
 */
 .detail-page {
   display: grid;
-  gap: $space-30;
+  gap: $space-30 $space-40;
   grid-template-areas:
     "featured-image"
     "image-list"
     "copy";
   margin: 0 auto;
   max-width: $container-width;
-  padding-left: $space-30;
-  padding-right: $space-30;
+  padding-left: $space-40;
+  padding-right: $space-40;
 
   @media (min-width: $breakpoint-xl) {
     grid-template-areas:
@@ -432,7 +473,7 @@ address {
   &__image-list {
     display: flex;
     flex-wrap: wrap;
-    gap: $space-30;
+    gap: $space-10;
     grid-area: image-list;
 
     @media (min-width: $breakpoint-xl) {
@@ -447,12 +488,10 @@ address {
       outline: none;
       padding: 0;
 
-      &:focus {
-        outline: none;
-        border: 1px solid $primary-clr;
+      &:focus-visible {
+        outline: 1px solid $primary-clr;
       }
 
-      &:focus,
       &:hover {
         .detail-page__image-list-image {
           opacity: 1;
@@ -463,6 +502,10 @@ address {
     &-image {
       max-width: 5.125rem;
       opacity: 0.7;
+
+      &--active {
+        opacity: 1;
+      }
     }
   }
 
@@ -472,7 +515,7 @@ address {
 
   &__heading {
     color: $primary-clr;
-    font-family: $font-heading;
+    font-family: $font-heading-detail;
     font-size: 1.0625rem;
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -513,7 +556,9 @@ address {
 */
 .contact {
   margin: 0 auto;
-  max-width: 25rem;
+  max-width: 27rem;
+  padding-left: $space-40;
+  padding-right: $space-40;
 
   &__map-container {
     margin-bottom: $space-50;
@@ -567,7 +612,58 @@ address {
   }
 }
 
+dialog {
+  background-color: transparent;
+  border: 0;
+  max-width: 55.25rem;
+  width: 96%;
+
+  &::backdrop {
+    background-color: rgba($black, 0.8);
+    transition: background-color 0.25s ease;
+  }
+
+  iframe {
+    border: 0;
+    opacity: 1;
+    transition: opacity 0.25s ease;
+    transition-delay: 0.375s;
+    width: 100%;
+  }
+
+  button {
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0px 1px 1px 1.5px #c1c1c1;
+    font-weight: 900;
+    height: 24px;
+    left: 1.75rem;
+    padding: 0.125rem;
+    position: absolute;
+    top: 1.75rem;
+    transition: scale 0.2s ease-out;
+    width: 24px;
+    z-index: 1;
+
+    &:focus {
+      outline: 2px solid $blue;
+    }
+
+    &:hover {
+      scale: 1.2;
+    }
+  }
+}
+
 @starting-style {
+  dialog[open]::backdrop {
+    background-color: rgba($black, 0.1);
+  }
+
+  dialog iframe {
+    opacity: 0;
+  }
+
   .detail-page__featured-image {
     opacity: 0;
   }
