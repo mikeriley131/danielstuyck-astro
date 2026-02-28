@@ -21,7 +21,9 @@ const { slug } = Astro.params;
 <Layout>
   <Header />
   <article class="content">
-    {slug === 'contact' && <Contact />}
-    {slug !== 'contact' && <PostDetail slug={slug} />}
+    <div class="inner-content">
+      {slug === 'contact' && <Contact />}
+      {slug !== 'contact' && <PostDetail slug={slug} />}
+    </div>
   </article>
 </Layout>

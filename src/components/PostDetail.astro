@@ -43,29 +43,29 @@ const getPostBySlug = async (slug: string) => {
 const pageData = await getPostBySlug(slug);
 ---
 <div class="detail-page">
-    <button class="detail-page__featured-image-button">
-      <img id="featured-image" class="detail-page__featured-image" src={`${import.meta.env.PUBLIC_WP_URL}${pageData.featuredImage.node.filePath}`} alt={`still from ${pageData.title}`} />
+  <button class="detail-page__featured-image-button">
+    <img id="featured-image" class="detail-page__featured-image" src={`${import.meta.env.PUBLIC_WP_URL}${pageData.featuredImage.node.filePath}`} alt={`still from ${pageData.title}`} width="904" height="508" />
+  </button>
+
+  <ul class="detail-page__image-list" role="list">
+    {pageData.portfolioItemFields.portfolioImages.map((image: PortfolioImage, index: number) => (
+      <li>
+        <button class="detail-page__image-list-button" id={`button-${index + 1}`}>
+          <img class="detail-page__image-list-image" src={`${import.meta.env.PUBLIC_WP_URL}${image?.portfolioImage?.node?.filePath}`} alt="" id={`img-${index + 1}`} />
+        </button>
+      </li>
+      ))}
+  </ul>
+
+  <div class="detail-page__text-content">
+    <h1 class="detail-page__heading">{pageData.title}</h1>
+    <p class="detail-page__copy">{pageData.portfolioItemFields.portfolioDirectors}</p>
+    <p class="detail-page__copy">{pageData.portfolioItemFields.portfolioRole}</p>
+    <p class="detail-page__copy detail-page__copy--awards" set:html={pageData.portfolioItemFields.portfolioAwards} />
+    <button class="detail-page__back-button" id="backButton">
+      <img src={`${import.meta.env.PUBLIC_WP_URL}/wp-content/themes/stuyck/images/icon-back-yellow.png`} />
     </button>
-
-    <ul class="detail-page__image-list" role="list">
-      {pageData.portfolioItemFields.portfolioImages.map((image: PortfolioImage, index: number) => (
-        <li>
-          <button class="detail-page__image-list-button" id={`button-${index + 1}`}>
-            <img class="detail-page__image-list-image" src={`${import.meta.env.PUBLIC_WP_URL}/${image?.portfolioImage?.node?.filePath}`} alt="" id={`img-${index + 1}`} />
-          </button>
-        </li>
-        ))}
-    </ul>
-
-    <div class="detail-page__text-content">
-      <h1 class="detail-page__heading">{pageData.title}</h1>
-      <p class="detail-page__copy">{pageData.portfolioItemFields.portfolioDirectors}</p>
-      <p class="detail-page__copy">{pageData.portfolioItemFields.portfolioRole}</p>
-      <p class="detail-page__copy detail-page__copy--awards" set:html={pageData.portfolioItemFields.portfolioAwards} />
-      <button class="detail-page__back-button" id="backButton">
-        <img src={`${import.meta.env.PUBLIC_WP_URL}/wp-content/themes/stuyck/images/icon-back-yellow.png`} />
-      </button>
-    </div>
+  </div>
 </div>
 
 <script>

@@ -85,7 +85,7 @@ $primary-clr: $yellow;
 /* SPACING
 * ------------------------------------------------------------------------------
 */
-$container-width: 65rem;
+$container-width: 63.125rem;
 $space: 1.5rem; /* 24px */
 
 $space-5: calc($space / 12); /* 2px */
@@ -275,6 +275,7 @@ address {
     &:not(:last-of-type) {
       .header__link::after {
         content: "//";
+        font-style: normal;
         margin-left: $space-10;
         margin-right: $space-10;
       }
@@ -347,10 +348,18 @@ address {
 */
 .content {
   background-color: $bg-clr;
-  padding-bottom: $space-55;
-  padding-left: $space-55;
-  padding-right: $space-55;
-  padding-top: $space-55;
+  padding-bottom: $space-50;
+  padding-top: $space-50;
+}
+
+.inner-content {
+  margin: 0 auto;
+  max-width: $container-width;
+  width: 90%;
+
+  @media (min-width: $breakpoint-xl) {
+    width: 100%;
+  }
 }
 
 /*
@@ -376,9 +385,9 @@ address {
   &__list {
     display: grid;
     gap: $space-40 $space-30;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, 240px);
+    justify-content: center;
     justify-items: center;
-    max-width: $container-width;
     margin: 0 auto;
   }
 
@@ -406,6 +415,12 @@ address {
     }
   }
 
+  &__reel-button {
+    .category__item-title {
+      text-align: left;
+    }
+  }
+
   &__reel-link {
     color: $black;
     text-decoration: none;
@@ -422,6 +437,12 @@ address {
     height: 136px;
     justify-content: center;
     width: 240px;
+
+    &:hover {
+      .category__reel-text {
+        color: $blue;
+      }
+    }
 
     img {
       height: 100%;
@@ -450,9 +471,6 @@ address {
     "image-list"
     "copy";
   margin: 0 auto;
-  max-width: $container-width;
-  padding-left: $space-40;
-  padding-right: $space-40;
 
   @media (min-width: $breakpoint-xl) {
     grid-template-areas:
@@ -461,6 +479,12 @@ address {
     grid-template-columns: 1fr 5.125rem;
     grid-template-rows: auto 1fr;
   }
+
+  // &__image-content {
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: $space-30;
+  // }
 
   &__featured-image {
     grid-area: featured-image;
@@ -574,6 +598,10 @@ address {
     margin-bottom: $space-55;
   }
 
+  &__social-links-container {
+    margin-bottom: $space-30;
+  }
+
   &__item {
     align-items: center;
     display: flex;
@@ -641,10 +669,14 @@ dialog {
     font-weight: 900;
     height: 24px;
     left: 1.75rem;
+    opacity: 1;
     padding: 0.125rem;
     position: absolute;
     top: 1.75rem;
-    transition: scale 0.2s ease-out;
+    transition:
+      opacity 0.25s ease,
+      scale 0.2s ease-out;
+    transition-delay: 0.375s;
     width: 24px;
     z-index: 1;
 
@@ -654,6 +686,7 @@ dialog {
 
     &:hover {
       scale: 1.2;
+      transition-delay: 0;
     }
   }
 }
@@ -663,7 +696,8 @@ dialog {
     background-color: rgba($black, 0.1);
   }
 
-  dialog iframe {
+  dialog iframe,
+  dialog button {
     opacity: 0;
   }
 

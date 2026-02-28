@@ -49,14 +49,12 @@ const categoryPosts = await getPostsByCategory(cleanSlug);
       <li class="category__item">
         {cleanSlug === 'colorist' ?
           (
-            <button command="show-modal" commandfor="my-dialog">
+            <button class="category__reel-button" command="show-modal" commandfor="my-dialog">
               <div class="category__reel-container">
                 <p class="category__reel-text">colorist reel</p>
               </div>
+              <p class="category__item-title category__item-link">Colorist Reel</p>
             </button>
-            <p class="category__item-title">
-              <a class="category__item-link" href="https://vimeo.com/37415884?width=853&height=480">Colorist Reel</a>
-            </p>
           )
         :
           (
