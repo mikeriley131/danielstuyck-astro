@@ -480,21 +480,12 @@ address {
     grid-template-rows: auto 1fr;
   }
 
-  // &__image-content {
-  //   display: flex;
-  //   flex-direction: column;
-  //   gap: $space-30;
-  // }
-
   &__featured-image {
     grid-area: featured-image;
+    height: auto;
     opacity: 1;
     transition: opacity 1s ease-out;
     view-transition-name: featured-image;
-
-    @media (min-width: $breakpoint-xl) {
-      margin-right: $space-30;
-    }
   }
 
   &__image-list {
