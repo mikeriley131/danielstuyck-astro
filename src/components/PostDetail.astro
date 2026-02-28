@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 import { getAllPosts } from '../lib/api';
 
 interface PortfolioImage {
@@ -43,15 +45,15 @@ const getPostBySlug = async (slug: string) => {
 const pageData = await getPostBySlug(slug);
 ---
 <div class="detail-page">
-  <button class="detail-page__featured-image-button">
-    <img id="featured-image" class="detail-page__featured-image" src={`${import.meta.env.PUBLIC_WP_URL}${pageData.featuredImage.node.filePath}`} alt={`still from ${pageData.title}`} width="904" height="508" />
+  <button class="detail-page__featured-image-button" aria-label="View next image">
+    <Image id="featured-image" class="detail-page__featured-image" src={`${import.meta.env.PUBLIC_WP_URL}${pageData.featuredImage.node.filePath}`} alt={`still from ${pageData.title}`} width="904" height="508" />
   </button>
 
   <ul class="detail-page__image-list" role="list">
     {pageData.portfolioItemFields.portfolioImages.map((image: PortfolioImage, index: number) => (
       <li>
-        <button class="detail-page__image-list-button" id={`button-${index + 1}`}>
-          <img class="detail-page__image-list-image" src={`${import.meta.env.PUBLIC_WP_URL}${image?.portfolioImage?.node?.filePath}`} alt="" id={`img-${index + 1}`} />
+        <button class="detail-page__image-list-button" id={`button-${index + 1}`} aria-label={`View image ${index + 1} as the featured image`}>
+          <Image class="detail-page__image-list-image" src={`${import.meta.env.PUBLIC_WP_URL}${image?.portfolioImage?.node?.filePath}`} alt="" id={`img-${index + 1}`} width="82" height="46" />
         </button>
       </li>
       ))}
@@ -62,8 +64,8 @@ const pageData = await getPostBySlug(slug);
     <p class="detail-page__copy">{pageData.portfolioItemFields.portfolioDirectors}</p>
     <p class="detail-page__copy">{pageData.portfolioItemFields.portfolioRole}</p>
     <p class="detail-page__copy detail-page__copy--awards" set:html={pageData.portfolioItemFields.portfolioAwards} />
-    <button class="detail-page__back-button" id="backButton">
-      <img src={`${import.meta.env.PUBLIC_WP_URL}/wp-content/themes/stuyck/images/icon-back-yellow.png`} />
+    <button class="detail-page__back-button" id="backButton" aria-label="Go back to the category page">
+      <img src={`${import.meta.env.PUBLIC_WP_URL}/wp-content/themes/stuyck/images/icon-back-yellow.png`} alt=""/>
     </button>
   </div>
 </div>

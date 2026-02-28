@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 import { getAllCategoriesWithSlugs, getAllPosts } from '../../lib/api';
 
 import Layout from '../../layouts/Layout.astro'
@@ -71,9 +73,9 @@ const categoryPosts = await getPostsByCategory(cleanSlug);
         <li class="category__item">
           {post.featuredImage && (
             <a class="category__reel-container" href={`/${post.slug}`}>
-              <img
+              <Image
                 src={`${import.meta.env.PUBLIC_WP_URL}${post.featuredImage.node.filePath}`}
-                alt={`still from ${post.title}`} />
+                alt={`still from ${post.title}`} width="240" height="146" />
             </a>
           )}
           {post.portfolioItemFields.previewText && (
