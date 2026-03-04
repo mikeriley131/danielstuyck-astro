@@ -52,7 +52,7 @@ const categoryPosts = await getPostsByCategory(cleanSlug);
         <li class="category__item">
           {cleanSlug === 'colorist' ?
             (
-              <button class="category__reel-button" command="show-modal" commandfor="my-dialog">
+              <button id="openDialogBtn" class="category__reel-button" command="show-modal" commandfor="reelDialog">
                 <div class="category__reel-container">
                   <p class="category__reel-text">colorist reel</p>
                 </div>
@@ -92,8 +92,8 @@ const categoryPosts = await getPostsByCategory(cleanSlug);
           </li>
         ))}
       </ul>
-      <dialog id="my-dialog">
-        <button commandfor="my-dialog" command="close" aria-label="Close dialog">x</button>
+      <dialog id="reelDialog">
+        <button id="closeDialogBtn" commandfor="reelDialog" command="close" aria-label="Close dialog">x</button>
         <div style="padding:56.25% 0 0 0;position:relative;">
           <iframe src="https://player.vimeo.com/video/37415884?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Color Reel // 2024"></iframe>
         </div>
@@ -102,3 +102,23 @@ const categoryPosts = await getPostsByCategory(cleanSlug);
     </div>
   </article>
 </Layout>
+
+<script>
+  import dialogPolyfill from 'dialog-polyfill';
+
+  const dialog = document.getElementById('reelDialog') as HTMLDialogElement;
+  const openButton = document.getElementById('openDialogBtn');
+  const closeButton = document.getElementById('closeDialogBtn');
+
+  if (!window.HTMLDialogElement) {
+    dialogPolyfill.registerDialog(dialog);
+  }
+
+  openButton?.addEventListener('click', () => {
+    dialog?.showModal();
+  });
+
+  closeButton?.addEventListener('click', () => {
+    dialog.close();
+  });
+</script>
