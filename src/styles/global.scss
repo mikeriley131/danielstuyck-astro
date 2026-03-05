@@ -403,7 +403,7 @@ address {
 
     &-title {
       font-size: 0.75rem;
-      line-height: 1;
+      line-height: 1.1;
       margin: 0;
       margin-top: $space-20;
     }
@@ -491,7 +491,7 @@ address {
   &__image-list {
     display: flex;
     flex-wrap: wrap;
-    gap: $space-10;
+    gap: $space-5;
     grid-area: image-list;
 
     @media (min-width: $breakpoint-xl) {
@@ -539,17 +539,18 @@ address {
     letter-spacing: 0.0625em;
     line-height: 1.1;
     margin: 0;
-    margin-bottom: $space-10;
+    margin-bottom: $space-5;
     text-transform: uppercase;
   }
 
   &__copy {
     color: $white;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     margin: 0;
 
     &--awards {
       font-style: italic;
+      line-height: 1.2;
       margin-top: $space-20;
     }
   }
@@ -558,7 +559,7 @@ address {
     margin-top: $space-30;
     outline: none;
     transition: scale 0.2s ease-out;
-    width: 1.875rem;
+    width: 2rem;
 
     &:focus,
     &:hover {
