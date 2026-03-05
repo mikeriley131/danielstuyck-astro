@@ -440,7 +440,7 @@ address {
 
     &:hover {
       .category__reel-text {
-        color: $blue;
+        transform: scale(1.1);
       }
     }
 
@@ -455,6 +455,7 @@ address {
     font-family: $font-body-light;
     font-weight: 500;
     margin: 0;
+    transition: transform 0.2s ease-out;
   }
 }
 
