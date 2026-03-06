@@ -259,7 +259,7 @@ address {
       outline: none;
       text-decoration: none;
 
-      &:focus {
+      &:focus(:not(:focus-visible)) {
         text-decoration: underline;
       }
     }
