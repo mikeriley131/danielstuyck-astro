@@ -423,10 +423,6 @@ address {
   &__reel-link {
     color: $black;
     text-decoration: none;
-
-    &:hover {
-      color: $blue;
-    }
   }
 
   &__reel-container {
@@ -439,7 +435,7 @@ address {
 
     &:hover {
       .category__reel-text {
-        transform: scale(1.1);
+        text-decoration: underline;
       }
     }
 
@@ -483,9 +479,6 @@ address {
   &__featured-image {
     grid-area: featured-image;
     height: auto;
-    opacity: 1;
-    transition: opacity 1s ease-out;
-    view-transition-name: featured-image;
   }
 
   &__image-list {
@@ -690,35 +683,6 @@ dialog {
 
   dialog iframe,
   dialog button {
-    opacity: 0;
-  }
-
-  .detail-page__featured-image {
-    opacity: 0;
-  }
-}
-
-/* Adjust speed of the cross-fade */
-::view-transition-group(featured-image) {
-  animation-duration: 0.25s;
-}
-
-/* Use standard animations to refine the fade */
-::view-transition-old(featured-image) {
-  animation: 0.25s ease-out both fade-out;
-}
-::view-transition-new(featured-image) {
-  animation: 0.25s ease-in both fade-in;
-}
-
-@keyframes fade-out {
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes fade-in {
-  from {
     opacity: 0;
   }
 }
