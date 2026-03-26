@@ -1,136 +1,203 @@
 ---
 import { Image } from 'astro:assets';
-
-import { getAllPosts } from '../lib/api';
+import { getAllPosts, getPostBySlug } from '../lib/api';
 
 interface PortfolioImage {
-  portfolioImage: {
-    node: {
-      filePath: string;
-    }
-  }
+  portfolioImage?: {
+    node?: {
+      filePath?: string;
+    };
+  };
 }
 
 interface Post {
-  title: string;
-  categories: {
-    nodes: {
-      name: string;
+  title?: string;
+  categories?: {
+    nodes?: {
+      name?: string;
     }[];
   };
-  slug: string;
-  featuredImage: {
-    node: {
-      filePath: string;
-    }
-  }
-  portfolioItemFields: {
-    portfolioAwards: string;
-    portfolioDirectors: string;
-    portfolioImages: {
-      portfolioImage: PortfolioImage[];
+  slug?: string;
+  featuredImage?: {
+    node?: {
+      filePath?: string;
     };
-    portfolioRole: string;
-    previewText: string;
-  }
+  };
+  portfolioItemFields?: {
+    portfolioAwards?: string;
+    portfolioDirectors?: string;
+    portfolioImages?: PortfolioImage[];
+    portfolioRole?: string;
+    previewText?: string;
+  };
 }
 
-const { slug } = Astro.props;
+interface Props {
+  slug?: string;
+  post?: Post;
+  isPreview?: boolean;
+}
 
-const getPostBySlug = async (slug: string) => {
-  const allPosts = await getAllPosts();
-  return allPosts.find((post: Post) => post.slug === slug);
-};
+const { slug, post: passedPost, isPreview = false } = Astro.props;
 
-const pageData = await getPostBySlug(slug);
+const pageData: Post | undefined = passedPost ?? (slug ? await getPostBySlug(slug) : undefined);
+
+if (!pageData) {
+  throw new Error(`PostDetail could not find post${slug ? ` for slug "${slug}"` : ''}.`);
+}
+
+const wpBaseUrl = import.meta.env.PUBLIC_WP_URL;
+const featuredImagePath = pageData.featuredImage?.node?.filePath;
+const featuredImageSrc = featuredImagePath ? `${wpBaseUrl}${featuredImagePath}` : null;
+
+const galleryImages = pageData.portfolioItemFields?.portfolioImages ?? [];
+const title = pageData.title ?? '';
+const directors = pageData.portfolioItemFields?.portfolioDirectors ?? '';
+const role = pageData.portfolioItemFields?.portfolioRole ?? '';
+const awards = pageData.portfolioItemFields?.portfolioAwards ?? '';
 ---
-<div class="detail-page">
-  <button class="detail-page__featured-image-button" aria-label="View next image">
-    <Image id="featured-image" class="detail-page__featured-image" src={`${import.meta.env.PUBLIC_WP_URL}${pageData.featuredImage.node.filePath}`} alt={`still from ${pageData.title}`} width="910" height="508" />
-  </button>
+<div class="detail-page" data-preview={isPreview ? 'true' : 'false'}>
+  {featuredImageSrc && (
+    <button class="detail-page__featured-image-button" aria-label="View next image" type="button">
+      <Image
+        id="featured-image"
+        class="detail-page__featured-image"
+        src={featuredImageSrc}
+        alt={`still from ${title}`}
+        width="910"
+        height="508"
+      />
+    </button>
+  )}
 
-  <ul class="detail-page__image-list" role="list">
-    {pageData.portfolioItemFields.portfolioImages.map((image: PortfolioImage, index: number) => (
-      <li>
-        <button class="detail-page__image-list-button" id={`button-${index + 1}`} aria-label={`View image ${index + 1} as the featured image`}>
-          <Image class="detail-page__image-list-image" src={`${import.meta.env.PUBLIC_WP_URL}${image?.portfolioImage?.node?.filePath}`} alt="" id={`img-${index + 1}`} width="82" height="46" />
-        </button>
-      </li>
-      ))}
-  </ul>
+  {galleryImages.length > 0 && (
+    <ul class="detail-page__image-list" role="list">
+      {galleryImages.map((image: PortfolioImage, index: number) => {
+        const imagePath = image?.portfolioImage?.node?.filePath;
+        if (!imagePath) return null;
+
+        return (
+          <li>
+            <button
+              class="detail-page__image-list-button"
+              id={`button-${index + 1}`}
+              aria-label={`View image ${index + 1} as the featured image`}
+              type="button"
+            >
+              <Image
+                class="detail-page__image-list-image"
+                src={`${wpBaseUrl}${imagePath}`}
+                alt=""
+                id={`img-${index + 1}`}
+                width="82"
+                height="46"
+              />
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  )}
 
   <div class="detail-page__text-content">
-    <h1 class="detail-page__heading">{pageData.title}</h1>
-    <p class="detail-page__copy">{pageData.portfolioItemFields.portfolioDirectors}</p>
-    <p class="detail-page__copy">{pageData.portfolioItemFields.portfolioRole}</p>
-    <p class="detail-page__copy detail-page__copy--awards" set:html={pageData.portfolioItemFields.portfolioAwards} />
-    <button class="detail-page__back-button" id="backButton" aria-label="Go back to the category page">
-      <img src={`${import.meta.env.PUBLIC_WP_URL}/wp-content/themes/stuyck/images/icon-back-yellow.png`} alt=""/>
+    <h1 class="detail-page__heading">{title}</h1>
+
+    {directors && <p class="detail-page__copy">{directors}</p>}
+    {role && <p class="detail-page__copy">{role}</p>}
+    {awards && <p class="detail-page__copy detail-page__copy--awards" set:html={awards} />}
+
+    <button
+      class="detail-page__back-button"
+      id="backButton"
+      aria-label="Go back to the category page"
+      type="button"
+    >
+      <img src={`${wpBaseUrl}/wp-content/themes/stuyck/images/icon-back-yellow.png`} alt="" />
     </button>
   </div>
 </div>
 
 <script>
-  import { myState } from '../store/state.js'
+  import { myState } from '../store/state.js';
 
-  document.querySelectorAll('.detail-page__image-list button').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const img = btn.querySelector('img');
-      if (img && img.id) myState.featuredImg = img.id;
-    });
-  });
+  const thumbnailButtons = document.querySelectorAll('.detail-page__image-list button');
+  const thumbnailImages = Array.from(
+    document.querySelectorAll('.detail-page__image-list img')
+  ) as HTMLImageElement[];
 
+  const featuredImage = document.getElementById('featured-image') as HTMLImageElement | null;
   const featuredButton = document.querySelector('.detail-page__featured-image-button');
-  featuredButton?.addEventListener('click', () => {
-    const imageEls = Array.from(document.querySelectorAll('.detail-page__image-list img')) as HTMLImageElement[];
-    if (!imageEls.length) return;
-
-    const featuredImage = document.getElementById('featured-image') as HTMLImageElement;
-
-    let currentIndex = -1;
-    if (myState.featuredImg) {
-      const match = myState.featuredImg.match(/img-(\d+)/);
-      if (match) currentIndex = parseInt(match[1], 10) - 1;
-    }
-
-    if (currentIndex === -1 && featuredImage) {
-      currentIndex = imageEls.findIndex(img => img.src === featuredImage.src);
-    }
-
-    if (currentIndex === -1) currentIndex = 0;
-    const nextIndex = (currentIndex + 1) % imageEls.length;
-    const nextId = imageEls[nextIndex].id;
-    if (nextId) myState.featuredImg = nextId;
-  });
+  const backButton = document.getElementById('backButton');
 
   function updateActiveThumbnail() {
-    const thumbnails = Array.from(document.querySelectorAll('.detail-page__image-list-image')) as HTMLImageElement[];
-    thumbnails.forEach(img => {
-      if (img.id === myState.featuredImg) {
-        img.classList.add('detail-page__image-list-image--active');
-      } else {
-        img.classList.remove('detail-page__image-list-image--active');
-      }
+    thumbnailImages.forEach((img) => {
+      img.classList.toggle('detail-page__image-list-image--active', img.id === myState.featuredImg);
     });
   }
 
-  myState.listen(() => {
-    const featuredImage = document.getElementById('featured-image')  as HTMLImageElement;
-    const newImage = document.getElementById(myState.featuredImg) as HTMLImageElement;
-    if (featuredImage && newImage) {
-      featuredImage.src = newImage.src;
+  function setFeaturedImageById(imageId: string) {
+    const newImage = document.getElementById(imageId) as HTMLImageElement | null;
+    if (!featuredImage || !newImage) return;
 
-      document.startViewTransition(() => {
-        featuredImage.src = newImage.src;
-      });
+    const applyUpdate = () => {
+      featuredImage.src = newImage.src;
       updateActiveThumbnail();
+    };
+
+    if ('startViewTransition' in document) {
+      document.startViewTransition(applyUpdate);
+    } else {
+      applyUpdate();
+    }
+  }
+
+  thumbnailButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const img = btn.querySelector('img');
+      if (img?.id) {
+        myState.featuredImg = img.id;
+      }
+    });
+  });
+
+  featuredButton?.addEventListener('click', () => {
+    if (!thumbnailImages.length) return;
+
+    let currentIndex = -1;
+
+    if (myState.featuredImg) {
+      const match = myState.featuredImg.match(/img-(\d+)/);
+      if (match) {
+        currentIndex = parseInt(match[1], 10) - 1;
+      }
+    }
+
+    if (currentIndex === -1 && featuredImage) {
+      currentIndex = thumbnailImages.findIndex((img) => img.src === featuredImage.src);
+    }
+
+    if (currentIndex === -1) currentIndex = 0;
+
+    const nextIndex = (currentIndex + 1) % thumbnailImages.length;
+    const nextId = thumbnailImages[nextIndex]?.id;
+
+    if (nextId) {
+      myState.featuredImg = nextId;
     }
   });
 
-  // Set initial active thumbnail on page load
-  updateActiveThumbnail();
+  myState.listen(() => {
+    if (myState.featuredImg) {
+      setFeaturedImageById(myState.featuredImg);
+    }
+  });
 
-  const backButton = document.getElementById('backButton');
+  if (!myState.featuredImg && thumbnailImages[0]?.id) {
+    myState.featuredImg = thumbnailImages[0].id;
+  } else {
+    updateActiveThumbnail();
+  }
+
   backButton?.addEventListener('click', () => {
     history.back();
   });
