@@ -5,7 +5,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Header from '../../../components/Header.astro';
 import Contact from '../../../components/Contact.astro';
 import PostDetail from '../../../components/PostDetail.astro';
-import { getPreviewPostByDatabaseId } from '../../../lib/api';
+import { getPreviewPostByDatabaseId, testAuth } from '../../../lib/api';
 
 const { id, slug } = Astro.params;
 const secret = Astro.url.searchParams.get('secret');
@@ -19,6 +19,9 @@ const post = await getPreviewPostByDatabaseId(Number(id));
 if (!post) {
   return new Response('Not found', { status: 404 });
 }
+
+const viewerTest = await testAuth();
+console.log('viewerTest:', viewerTest);
 ---
 <!-- <Layout>
   <Header />
