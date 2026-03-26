@@ -5,7 +5,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Header from '../../../components/Header.astro';
 import Contact from '../../../components/Contact.astro';
 import PostDetail from '../../../components/PostDetail.astro';
-import { getPreviewPostByDatabaseId, testAuth } from '../../../lib/api';
+import { getPreviewPostByDatabaseId } from '../../../lib/api';
 
 const { id, slug } = Astro.params;
 const secret = Astro.url.searchParams.get('secret');
@@ -19,11 +19,8 @@ const post = await getPreviewPostByDatabaseId(Number(id));
 if (!post) {
   return new Response('Not found', { status: 404 });
 }
-
-const viewerTest = await testAuth();
-console.log('viewerTest:', viewerTest);
 ---
-<!-- <Layout>
+<Layout>
   <Header />
   <article class="content">
     <div class="inner-content">
@@ -31,7 +28,4 @@ console.log('viewerTest:', viewerTest);
       {slug !== 'contact' && <PostDetail post={post} isPreview={true} />}
     </div>
   </article>
-</Layout> -->
-<pre>{JSON.stringify(viewerTest, null, 2)}</pre>
-<p>Preview title: {post?.title}</p>
-<pre>{JSON.stringify(post, null, 2)}</pre>
+</Layout>

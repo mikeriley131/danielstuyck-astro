@@ -204,7 +204,7 @@ export async function getPreviewPostByDatabaseId(databaseId) {
   const data = await fetchAPI(
     `
     query GetPreviewPost($id: ID!) {
-      post(id: $id, idType: DATABASE_ID) {
+      post(id: $id, idType: DATABASE_ID, asPreview: true) {
         databaseId
         slug
         title
@@ -242,20 +242,4 @@ export async function getPreviewPostByDatabaseId(databaseId) {
   );
 
   return data?.post;
-}
-
-export async function testAuth() {
-  const data = await fetchAPI(
-    `
-    {
-      viewer {
-        databaseId
-        name
-      }
-    }
-    `,
-    { auth: true },
-  );
-
-  return data;
 }
