@@ -136,6 +136,7 @@ export async function getAllPosts() {
           featuredImage {
             node {
               filePath
+              sourceUrl
             }
           }
           portfolioItemFields {
@@ -145,6 +146,7 @@ export async function getAllPosts() {
               portfolioImage {
                 node {
                   filePath(size: LARGE)
+                  sourceUrl(size: LARGE)
                 }
               }
             }
@@ -174,6 +176,7 @@ export async function getPostBySlug(slug) {
         featuredImage {
           node {
             filePath
+            sourceUrl
           }
         }
         portfolioItemFields {
@@ -183,6 +186,7 @@ export async function getPostBySlug(slug) {
             portfolioImage {
               node {
                 filePath(size: LARGE)
+                sourceUrl(size: LARGE)
               }
             }
           }
@@ -212,6 +216,7 @@ export async function getPreviewPostByDatabaseId(databaseId) {
         featuredImage {
           node {
             filePath
+            sourceUrl
           }
         }
         categories {
@@ -226,6 +231,7 @@ export async function getPreviewPostByDatabaseId(databaseId) {
             portfolioImage {
               node {
                 filePath(size: LARGE)
+                sourceUrl(size: LARGE)
               }
             }
           }

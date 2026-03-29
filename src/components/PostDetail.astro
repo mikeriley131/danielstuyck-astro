@@ -6,6 +6,7 @@ interface PortfolioImage {
   portfolioImage?: {
     node?: {
       filePath?: string;
+      sourceUrl?: string;
     };
   };
 }
@@ -21,6 +22,7 @@ interface Post {
   featuredImage?: {
     node?: {
       filePath?: string;
+      sourceUrl?: string;
     };
   };
   portfolioItemFields?: {
@@ -47,8 +49,8 @@ if (!pageData) {
 }
 
 const wpBaseUrl = import.meta.env.PUBLIC_WP_URL;
-const featuredImagePath = pageData.featuredImage?.node?.filePath;
-const featuredImageSrc = featuredImagePath ? `${wpBaseUrl}${featuredImagePath}` : null;
+const featuredImageSrcUrl = pageData.featuredImage?.node?.sourceUrl;
+const featuredImageSrc = featuredImageSrcUrl || null;
 
 const galleryImages = pageData.portfolioItemFields?.portfolioImages ?? [];
 const title = pageData.title ?? '';
