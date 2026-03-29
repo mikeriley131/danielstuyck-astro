@@ -135,7 +135,6 @@ export async function getAllPosts() {
           slug
           featuredImage {
             node {
-              filePath
               sourceUrl
             }
           }
@@ -145,7 +144,6 @@ export async function getAllPosts() {
             portfolioImages {
               portfolioImage {
                 node {
-                  filePath(size: LARGE)
                   sourceUrl(size: LARGE)
                 }
               }
@@ -175,7 +173,6 @@ export async function getPostBySlug(slug) {
         }
         featuredImage {
           node {
-            filePath
             sourceUrl
           }
         }
@@ -185,7 +182,6 @@ export async function getPostBySlug(slug) {
           portfolioImages {
             portfolioImage {
               node {
-                filePath(size: LARGE)
                 sourceUrl(size: LARGE)
               }
             }
@@ -215,7 +211,6 @@ export async function getPreviewPostByDatabaseId(databaseId) {
         content
         featuredImage {
           node {
-            filePath
             sourceUrl
           }
         }
@@ -230,7 +225,6 @@ export async function getPreviewPostByDatabaseId(databaseId) {
           portfolioImages {
             portfolioImage {
               node {
-                filePath(size: LARGE)
                 sourceUrl(size: LARGE)
               }
             }

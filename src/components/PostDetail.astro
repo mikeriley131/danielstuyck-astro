@@ -5,7 +5,6 @@ import { getAllPosts, getPostBySlug } from '../lib/api';
 interface PortfolioImage {
   portfolioImage?: {
     node?: {
-      filePath?: string;
       sourceUrl?: string;
     };
   };
@@ -21,7 +20,6 @@ interface Post {
   slug?: string;
   featuredImage?: {
     node?: {
-      filePath?: string;
       sourceUrl?: string;
     };
   };
@@ -75,8 +73,8 @@ const awards = pageData.portfolioItemFields?.portfolioAwards ?? '';
   {galleryImages.length > 0 && (
     <ul class="detail-page__image-list" role="list">
       {galleryImages.map((image: PortfolioImage, index: number) => {
-        const imagePath = image?.portfolioImage?.node?.filePath;
-        if (!imagePath) return null;
+        const imageSrcUrl = image?.portfolioImage?.node?.sourceUrl;
+        if (!imageSrcUrl) return null;
 
         return (
           <li>
@@ -88,7 +86,7 @@ const awards = pageData.portfolioItemFields?.portfolioAwards ?? '';
             >
               <Image
                 class="detail-page__image-list-image"
-                src={`${wpBaseUrl}${imagePath}`}
+                src={imageSrcUrl}
                 alt=""
                 id={`img-${index + 1}`}
                 width="82"
