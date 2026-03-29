@@ -59,14 +59,24 @@ const awards = pageData.portfolioItemFields?.portfolioAwards ?? '';
 <div class="detail-page" data-preview={isPreview ? 'true' : 'false'}>
   {featuredImageSrc && (
     <button class="detail-page__featured-image-button" aria-label="View next image" type="button">
-      <Image
-        id="featured-image"
-        class="detail-page__featured-image"
-        src={featuredImageSrc}
-        alt={`still from ${title}`}
-        width="910"
-        height="508"
-      />
+      {isPreview ? (
+        <img id="featured-image"
+          class="detail-page__featured-image"
+          src={featuredImageSrc}
+          alt={`still from ${title}`}
+          width="910"
+          height="508"
+        />
+      ) : (
+        <Image
+          id="featured-image"
+          class="detail-page__featured-image"
+          src={featuredImageSrc}
+          alt={`still from ${title}`}
+          width="910"
+          height="508"
+        />
+      )}
     </button>
   )}
 
@@ -84,14 +94,25 @@ const awards = pageData.portfolioItemFields?.portfolioAwards ?? '';
               aria-label={`View image ${index + 1} as the featured image`}
               type="button"
             >
-              <Image
-                class="detail-page__image-list-image"
-                src={imageSrcUrl}
-                alt=""
-                id={`img-${index + 1}`}
-                width="82"
-                height="46"
-              />
+              {isPreview ? (
+                <img
+                  class="detail-page__image-list-image"
+                  src={imageSrcUrl}
+                  alt=""
+                  id={`img-${index + 1}`}
+                  width="82"
+                  height="46"
+                />
+              ) : (
+                <Image
+                  class="detail-page__image-list-image"
+                  src={imageSrcUrl}
+                  alt=""
+                  id={`img-${index + 1}`}
+                  width="82"
+                  height="46"
+                />
+              )}
             </button>
           </li>
         );
