@@ -15,7 +15,7 @@ interface Post {
   };
   featuredImage: {
     node: {
-      filePath: string;
+      sourceUrl: string;
     }
   }
   portfolioItemFields: {
@@ -75,7 +75,7 @@ const categoryPosts = await getPostsByCategory(cleanSlug);
             {post.featuredImage && (
               <a class="category__reel-container" href={`/${post.slug}`}>
                 <Image
-                  src={`${import.meta.env.PUBLIC_WP_URL}${post.featuredImage.node.filePath}`}
+                  src={post.featuredImage.node.sourceUrl}
                   alt={`still from ${post.title}`} width="240" height="146" />
               </a>
             )}

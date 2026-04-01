@@ -1,5 +1,16 @@
 // @ts-check
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig } from "astro/config";
+import netlify from "@astrojs/netlify";
 
 // https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  adapter: netlify(),
+  image: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "admin.danielstuyck.com",
+      },
+    ],
+  },
+});

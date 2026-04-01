@@ -23,5 +23,5 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# netlify
-.netlify/*
+# Local Netlify folder
+.netlify

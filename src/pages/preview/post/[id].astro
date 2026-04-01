@@ -1,0 +1,31 @@
+---
+export const prerender = false;
+
+import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../components/Header.astro';
+import Contact from '../../../components/Contact.astro';
+import PostDetail from '../../../components/PostDetail.astro';
+import { getPreviewPostByDatabaseId } from '../../../lib/api';
+
+const { id, slug } = Astro.params;
+const secret = Astro.url.searchParams.get('secret');
+
+if (secret !== import.meta.env.WP_PREVIEW_SECRET) {
+  return new Response('Unauthorized', { status: 401 });
+}
+
+const post = await getPreviewPostByDatabaseId(Number(id));
+
+if (!post) {
+  return new Response('Not found', { status: 404 });
+}
+---
+<Layout>
+  <Header />
+  <article class="content">
+    <div class="inner-content">
+      {slug === 'contact' && <Contact />}
+      {slug !== 'contact' && <PostDetail post={post} isPreview={true} />}
+    </div>
+  </article>
+</Layout>

@@ -9,7 +9,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.17.1",
+    "@astrojs/netlify": "^7.0.4",
+    "astro": "^6.0.8",
     "dialog-polyfill": "^0.5.6",
     "sass": "^1.97.3"
   },
