@@ -111,6 +111,7 @@ const awards = pageData.portfolioItemFields?.portfolioAwards ?? '';
                   id={`img-${index + 1}`}
                   width="82"
                   height="46"
+                  data-fullsrc={imageSrcUrl}
                 />
               )}
             </button>
@@ -161,7 +162,7 @@ const awards = pageData.portfolioItemFields?.portfolioAwards ?? '';
     if (!featuredImage || !newImage) return;
 
     const applyUpdate = () => {
-      featuredImage.src = newImage.src;
+      featuredImage.src = newImage.dataset.fullsrc || newImage.src;
       updateActiveThumbnail();
     };
 
