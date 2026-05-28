@@ -12,11 +12,23 @@ interface PortfolioImage {
 
 interface Post {
   title?: string;
+  categories?: {
+    nodes?: {
+      name?: string;
+    }[];
+  };
   slug?: string;
   featuredImage?: {
     node?: {
       sourceUrl?: string;
     };
+  };
+  portfolioItemFields?: {
+    portfolioAwards?: string;
+    portfolioDirectors?: string;
+    portfolioImages?: PortfolioImage[];
+    portfolioRole?: string;
+    previewText?: string;
   };
 }
 
@@ -37,7 +49,178 @@ if (!pageData) {
 const wpBaseUrl = import.meta.env.PUBLIC_WP_URL;
 const featuredImageSrcUrl = pageData.featuredImage?.node?.sourceUrl;
 const featuredImageSrc = featuredImageSrcUrl || null;
+
+const galleryImages = pageData.portfolioItemFields?.portfolioImages ?? [];
+const title = pageData.title ?? '';
+const directors = pageData.portfolioItemFields?.portfolioDirectors ?? '';
+const role = pageData.portfolioItemFields?.portfolioRole ?? '';
+const awards = pageData.portfolioItemFields?.portfolioAwards ?? '';
 ---
 <div class="detail-page" data-preview={isPreview ? 'true' : 'false'}>
-  <p>WordPress post detail page</p>
+  {featuredImageSrc && (
+    <button class="detail-page__featured-image-button" aria-label="View next image" type="button">
+      {isPreview ? (
+        <img id="featured-image"
+          class="detail-page__featured-image"
+          src={featuredImageSrc}
+          alt={`still from ${title}`}
+          width="910"
+          height="508"
+        />
+      ) : (
+        <Image
+          id="featured-image"
+          class="detail-page__featured-image"
+          src={featuredImageSrc}
+          alt={`still from ${title}`}
+          width="910"
+          height="508"
+        />
+      )}
+    </button>
+  )}
+
+  {galleryImages.length > 0 && (
+    <ul class="detail-page__image-list" role="list">
+      {galleryImages.map((image: PortfolioImage, index: number) => {
+        const imageSrcUrl = image?.portfolioImage?.node?.sourceUrl;
+        if (!imageSrcUrl) return null;
+
+        return (
+          <li>
+            <button
+              class="detail-page__image-list-button"
+              id={`button-${index + 1}`}
+              aria-label={`View image ${index + 1} as the featured image`}
+              type="button"
+            >
+              {isPreview ? (
+                <img
+                  class="detail-page__image-list-image"
+                  src={imageSrcUrl}
+                  alt=""
+                  id={`img-${index + 1}`}
+                  width="82"
+                  height="46"
+                />
+              ) : (
+                <Image
+                  class="detail-page__image-list-image"
+                  src={imageSrcUrl}
+                  alt=""
+                  id={`img-${index + 1}`}
+                  width="82"
+                  height="46"
+                  data-fullsrc={imageSrcUrl}
+                />
+              )}
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  )}
+
+  <div class="detail-page__text-content">
+    <h1 class="detail-page__heading">{title}</h1>
+
+    {directors && <p class="detail-page__copy">{directors}</p>}
+    {role && <p class="detail-page__copy">{role}</p>}
+    {awards && <p class="detail-page__copy detail-page__copy--awards" set:html={awards} />}
+
+    <button
+      class="detail-page__back-button"
+      id="backButton"
+      aria-label="Go back to the category page"
+      type="button"
+    >
+      <img src={`${wpBaseUrl}/wp-content/themes/stuyck/images/icon-back-yellow.png`} alt="" />
+    </button>
+  </div>
 </div>
+
+<script>
+  import { myState } from '../store/state.js';
+
+  const thumbnailButtons = document.querySelectorAll('.detail-page__image-list button');
+  const thumbnailImages = Array.from(
+    document.querySelectorAll('.detail-page__image-list img')
+  ) as HTMLImageElement[];
+
+  const featuredImage = document.getElementById('featured-image') as HTMLImageElement | null;
+  const featuredButton = document.querySelector('.detail-page__featured-image-button');
+  const backButton = document.getElementById('backButton');
+
+  function updateActiveThumbnail() {
+    thumbnailImages.forEach((img) => {
+      img.classList.toggle('detail-page__image-list-image--active', img.id === myState.featuredImg);
+    });
+  }
+
+  function setFeaturedImageById(imageId: string) {
+    const newImage = document.getElementById(imageId) as HTMLImageElement | null;
+    if (!featuredImage || !newImage) return;
+
+    const applyUpdate = () => {
+      featuredImage.src = newImage.dataset.fullsrc || newImage.src;
+      updateActiveThumbnail();
+    };
+
+    if ('startViewTransition' in document) {
+      document.startViewTransition(applyUpdate);
+    } else {
+      applyUpdate();
+    }
+  }
+
+  thumbnailButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const img = btn.querySelector('img');
+      if (img?.id) {
+        myState.featuredImg = img.id;
+      }
+    });
+  });
+
+  featuredButton?.addEventListener('click', () => {
+    if (!thumbnailImages.length) return;
+
+    let currentIndex = -1;
+
+    if (myState.featuredImg) {
+      const match = myState.featuredImg.match(/img-(\d+)/);
+      if (match) {
+        currentIndex = parseInt(match[1], 10) - 1;
+      }
+    }
+
+    if (currentIndex === -1 && featuredImage) {
+      currentIndex = thumbnailImages.findIndex((img) => img.src === featuredImage.src);
+    }
+
+    if (currentIndex === -1) currentIndex = 0;
+
+    const nextIndex = (currentIndex + 1) % thumbnailImages.length;
+    const nextId = thumbnailImages[nextIndex]?.id;
+
+    if (nextId) {
+      myState.featuredImg = nextId;
+    }
+  });
+
+  myState.listen(() => {
+    if (myState.featuredImg) {
+      setFeaturedImageById(myState.featuredImg);
+    }
+  });
+
+  if (!myState.featuredImg && thumbnailImages[0]?.id) {
+    myState.featuredImg = thumbnailImages[0].id;
+  } else {
+    updateActiveThumbnail();
+  }
+
+  backButton?.addEventListener('click', () => {
+    history.back();
+  });
+</script>

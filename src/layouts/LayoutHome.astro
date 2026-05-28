@@ -1,24 +1,19 @@
 ---
-import { Font } from "astro:assets";
-import "../styles/index.scss";
+import '../styles/global.scss'
 ---
-
 <!doctype html>
 <html lang="en">
-  <head>
-    <Font cssVariable="--font-pt-serif" />
-    <Font cssVariable="--font-amaranth" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Focused Bodyworks</title>
-  </head>
-  <body>
-    <slot />
-    <script
-      type="text/javascript"
-      src="https://assets.calendly.com/assets/external/widget.js"
-      async></script>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Daniel Stuyck</title>
+	</head>
+	<body>
+		<div class="home__header-wrapper">
+			<slot />
+		</div>
+	</body>
 </html>
