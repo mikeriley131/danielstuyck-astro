@@ -1,20 +1,23 @@
 {
-  "name": "danielstuyck-astro",
+  "name": "astro-boilerplate",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint:css": "npx stylelint '**/*.scss'"
   },
   "dependencies": {
-    "@astrojs/netlify": "^7.0.4",
-    "astro": "^6.0.8",
+    "@astrojs/netlify": "7.0.10",
+    "astro": "6.3.5",
     "dialog-polyfill": "^0.5.6",
-    "sass": "^1.97.3"
+    "sass": "^1.99.0"
   },
   "devDependencies": {
-    "dotenv": "^17.2.4"
+    "dotenv": "^17.4.2",
+    "stylelint": "^17.12.0",
+    "stylelint-config-standard-scss": "^17.0.0"
   }
 }

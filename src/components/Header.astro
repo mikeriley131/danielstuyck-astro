@@ -1,26 +1,27 @@
 ---
-import { getPrimaryMenu } from '../lib/api';
 
-interface MenuItem {
-  label: string;
-  path: string;
-}
-
-const menu = await getPrimaryMenu();
-const currentPath = Astro.url.pathname;
 ---
+
 <header class="header">
-  <p class="header__title">
-    <a class="header__title-link" href="/">Daniel Stuyck</a>
-  </p>
+  <img
+    class="header__logo"
+    src="/images/focused-bodyworks-logo.svg"
+    alt="Focused Bodyworks Logo"
+  />
   <nav class="header__nav">
     <ul role="list" class="header__list">
-      {menu.map((item: MenuItem) => (
-        <li class="header__item">
-          <a class="header__link" href={item.path}>
-            <span class={currentPath !== '/' && item.path.includes(currentPath) ? "header__link-text header__link-text--active" : "header__link-text"}>{item.label}</span></a>
-        </li>
-      ))}
+      <li class="header__item">
+        <a class="header__link" href="#mission">Mission</a>
+      </li>
+      <li class="header__item">
+        <a class="header__link" href="#about">About</a>
+      </li>
+      <li class="header__item">
+        <a class="header__link" href="#services">Services</a>
+      </li>
+      <li class="header__item">
+        <a class="header__link" href="#contact">Contact</a>
+      </li>
     </ul>
   </nav>
 </header>

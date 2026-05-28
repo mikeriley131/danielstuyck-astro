@@ -1,8 +1,22 @@
 ---
-import LayoutHome from '../layouts/LayoutHome.astro';
-import Header from '../components/Header.astro';
+import LayoutHome from "../layouts/LayoutHome.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Mission from "../components/Mission.astro";
+import About from "../components/About.astro";
+import Services from "../components/Services.astro";
+import Schedule from "../components/Schedule.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <LayoutHome>
-	<Header />
+  <Header />
+  <main id="main" role="main">
+    <Hero />
+    <Mission />
+    <About />
+    <Services />
+    <Schedule />
+  </main>
+  <Footer />
 </LayoutHome>

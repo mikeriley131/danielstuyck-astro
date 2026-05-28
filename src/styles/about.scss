@@ -1,0 +1,46 @@
+@use "variables" as *;
+
+.about {
+  display: flex;
+  background-color: $grey;
+  justify-content: center;
+  padding: $space-90 $space-50;
+  width: 100%;
+
+  @media (min-width: $breakpoint-xl) {
+    padding: $space-90;
+  }
+
+  &__container {
+    align-items: center;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: $space-60;
+    max-width: $container-width;
+
+    @media (min-width: $breakpoint-xl) {
+      align-items: start;
+      display: grid;
+      grid-template-columns: calc(40% - $space-60 / 2) calc(60% - $space-60 / 2);
+    }
+
+    @media (min-width: $breakpoint-xxl) {
+      gap: $space-90;
+      grid-template-columns: calc(40% - $space-90 / 2) calc(60% - $space-90 / 2);
+    }
+  }
+
+  &__image-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $space-60;
+  }
+
+  &__image {
+    border-radius: 2rem;
+  }
+
+  &__content {
+    font-size: 1.5rem;
+  }
+}

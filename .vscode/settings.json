@@ -1,0 +1,7 @@
+{
+  "editor.formatOnSave": true,
+  "stylelint.validate": ["css", "postcss", "scss"],
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  }
+}
